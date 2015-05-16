@@ -30,7 +30,7 @@ This is the code that was implemented to unzip the file on Github.
 
 
 ```{r}
-## exerData <- read.csv(unz(activity.zip,"activity.csv" ))
+exerData <- read.csv(unz(activity.zip,"activity.csv" ))
 ```
 #### Part one - looking at the data including missing values and draw a histogram of steps per day and plot average steps per interval over 5 minutes intervals over a two month period.  
 
