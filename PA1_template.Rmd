@@ -26,12 +26,12 @@ The goal for this project was to analyze the activity dataset to understand the 
 ## exerData <- read.csv(unz(temp,"activity.csv" ))
 ## unlink(temp)
 ```
-This is the code that was implemented to unzip the file on Github.
-
+This is the code that was implemented to unzip the file on Github to address working directory issue.
 
 ```{r}
-## https://github.com/AlisonDoucette/RepData_PeerAssessment1/blob/master/activity.zip
-## exerData <- read.csv(unz(activity.zip,"activity.csv" ))
+unzip("activity.zip")
+exerData <- read.csv("activity.csv")
+
 ```
 #### Part one - looking at the data including missing values and draw a histogram of steps per day and plot average steps per interval over 5 minutes intervals over a two month period.  
 
@@ -39,7 +39,7 @@ This is the code that was implemented to unzip the file on Github.
 ```{r}
 
 ## Calculate Steps per Day
-    stepsPerDay<-aggregate(exerData$Steps, by=list(exerData$dateExer), FUN=sum)
+    stepsPerDay<-aggregate(exerData$steps, by=list(exerData$date), FUN=sum)
     colnames(stepsPerDay) <- c("ExerDate","StepsTotal")
 
 ## Draw Histogram
@@ -74,13 +74,14 @@ to get a date-interval.
 ```{r}
 ## Convert Date and Interval to YYYY-MM-DD HH:SS
     library(dplyr)
-    exerData1 <- mutate(exerData, Hour = ExerInterval %/% 100, Minute = ExerInterval %% 100)  
+    library(lubridate)
+    exerData1 <- mutate(exerData, Hour = interval %/% 100, Minute = interval %% 100)  
     ## rm(exerData)
-    exerData2 <-transform(exerData1,NewDate=paste0(dateExer," ",Hour,":",Minute,":","00"))
+    exerData2 <-transform(exerData1,NewDate=paste0(date," ",Hour,":",Minute,":","00"))
     library(lubridate)
     exerData2$NewDate <- ymd_hms(exerData2$NewDate)
     ## Calculate Average steps per time interval
-    AvgStepsPerInterval<-aggregate(exerData2$Steps, by=list(exerData2$NewDate),FUN=mean)
+    AvgStepsPerInterval<-aggregate(exerData2$steps, by=list(exerData2$NewDate),FUN=mean)
     ## Give new Headers
     colnames(AvgStepsPerInterval) <- c("dateExer","AverageSteps")
 ## Plot the 5 minute time interval
@@ -97,7 +98,7 @@ to get a date-interval.
 ##### 4. The next step was to determine the interval with the maximum number of steps.  
 ```{r}
 ##  Determine Interval with the Maxiumum number of steps
-    Sorted<- exerData2[order(-exerData2$Steps,na.last=NA),]
+    Sorted<- exerData2[order(-exerData2$steps,na.last=NA),]
     MaxSteps <-(Sorted[1,6])
 ```
 ###### This maximum interval was found to be:
@@ -205,8 +206,8 @@ So the next attempt to fill the missing values was to try and find the mode for 
 ```{r}
 ## Start file from beginning using mode of all steps
 library(modeest)
-NONAinExerData2<- subset(exerData2, !is.na(exerData2$Steps))
-ModeSteps<-mlv(NONAinExerData2$Steps, method = "mfv")
+NONAinExerData2<- subset(exerData2, !is.na(exerData2$steps))
+ModeSteps<-mlv(NONAinExerData2$steps, method = "mfv")
 ## Determine that mode for all steps when NA are removed is 0
 ## Set all NA in Steps in file to zero
     exerDataFill <- exerData2
@@ -228,8 +229,8 @@ ModeSteps<-mlv(NONAinExerData2$Steps, method = "mfv")
 ```{r}
     Weekdays<-subset(exerDataFill, DayofWeek=="Weekday")
     Weekend<-subset(exerDataFill, DayofWeek=="Weekend")      
-    AvgStepsWeekday<-aggregate(Weekdays$Steps, by=list(Weekdays$NewDate),FUN=mean)
-    AvgStepsWeekend<-aggregate(Weekend$Steps, by=list(Weekend$NewDate),FUN=mean)
+    AvgStepsWeekday<-aggregate(Weekdays$steps, by=list(Weekdays$NewDate),FUN=mean)
+    AvgStepsWeekend<-aggregate(Weekend$steps, by=list(Weekend$NewDate),FUN=mean)
     ## Give new Headers
     colnames(AvgStepsWeekend) <- c("Interval","AverageSteps")
     colnames(AvgStepsWeekday) <- c("Interval","AverageSteps")
