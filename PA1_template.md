@@ -37,7 +37,9 @@ exerData <- read.csv("activity.csv")
 ```
 #### Part one - looking at the data including missing values and draw a histogram of steps per day and plot average steps per interval over 5 minutes intervals over a two month period.  
 
-##### 1. The first step was to calculate the steps per day and then plot those on a histogram.  
+##### 1. The first step was to calculate the steps per day and then plot those on a histogram. 
+
+### Question #1: What is mean total number of steps taken per day?
 
 ```r
 ## Calculate Steps per Day
@@ -69,7 +71,7 @@ The mean was found to be:
 
 The median was found to be:  
 10765
-
+### Question #2: What is the average daily activity pattern?
 ##### 3. The next step was to plot the average steps per interval over the 5 minute variables.  
 To do this required the parsing out of the intervals into hours and minutes and then merging them with the date
 to get a date-interval.   
@@ -235,7 +237,7 @@ print (xt, type = "html")
 ```
 
 <!-- html table generated in R 3.2.0 by xtable 1.7-4 package -->
-<!-- Sat May 16 18:17:07 2015 -->
+<!-- Sat May 16 18:30:20 2015 -->
 <table border=1>
 <tr> <th>  </th> <th> DayofWeek </th> <th> Steps </th>  </tr>
   <tr> <td align="right"> 1 </td> <td> Sun </td> <td align="right"> 42.63 </td> </tr>
@@ -271,6 +273,8 @@ ModeSteps<-mlv(NONAinExerData2$steps, method = "mfv")
     exerDataFill <- exerData2
     exerDataFill[is.na(exerDataFill)] <- 0
 ```
+### QUestion #3 Are there differences in activity patterns between weekdays and weekends?
+
 ######  The next step was to add a new column for days of the week and then process that so that Monday to Friday were coded as weekdays and Saturday and Sunday were coded as weekends.  
 
 
