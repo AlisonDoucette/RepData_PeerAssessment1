@@ -1,0 +1,7 @@
+## Lesson Learned:
+NEVER TOUCH ANYTHING IN THE FIGURE-HTML DIRECTORY
+If you remove a file from that directory - then Knitr gets really really upset - specifically pandoc gets really upset with a pandoc document conversion error.
+So was never able to rename the figures in the { r } brackets to nice names instead of unknown chunks.
+
+Tried reinstalling knit2html to see if it would help after upgrade to 3.0.3 and the package is not available.
+
